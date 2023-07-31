@@ -3,4 +3,5 @@ export type Question = {
     question: string;
     answers: Array<string>;
     correct: number;
+    assistant?: string;
 }
