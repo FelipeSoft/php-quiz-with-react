@@ -1,4 +1,5 @@
 import { Question } from "@/app/types/Question";
+import { Assistant } from "@/app/components/Assistant";
 
 export const questions: Question[] = [
     {
@@ -28,7 +29,7 @@ export const questions: Question[] = [
     {
         id: 4, 
         question: "Analise o código abaixo e assinale a alternativa que responde ao resultado correto:", 
-        assistant: "for($i = 10; i >= 0; i--){ print($i) }",
+        assistant: <Assistant />,
         answers: 
             [
                 "Sequência: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10.", 
@@ -47,6 +48,51 @@ export const questions: Question[] = [
                 "Ambas as estruturas fazem uma verificação inicialmente para depois executar um bloco de código.", 
                 "A estrutura do-while verifica uma condição inicialmente para depois executar um bloco de código, já o while executa um trecho de código primeiro e depois faz uma verificação.",
                 "Ambas as estruturas fazem a execução de um bloco de código para verificar as condições."
+            ],
+        correct: 0
+    },
+    {
+        id: 6, 
+        question: "Diferencie as estruturas de repetições while e do-while:", 
+        answers: 
+            [
+
+            ],
+        correct: 0
+    },
+    {
+        id: 7, 
+        question: "Diferencie as estruturas de repetições while e do-while:", 
+        answers: 
+            [
+
+            ],
+        correct: 0
+    },
+    {
+        id: 8, 
+        question: "Diferencie as estruturas de repetições while e do-while:", 
+        answers: 
+            [
+
+            ],
+        correct: 0
+    },
+    {
+        id: 9, 
+        question: "Diferencie as estruturas de repetições while e do-while:", 
+        answers: 
+            [
+
+            ],
+        correct: 0
+    },
+    {
+        id: 10, 
+        question: "Diferencie as estruturas de repetições while e do-while:", 
+        answers: 
+            [
+ 
             ],
         correct: 0
     },

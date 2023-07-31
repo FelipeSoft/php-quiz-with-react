@@ -13,35 +13,48 @@ const Page = () => {
   const [isInteractable, setIsInteractable] = useState<boolean>(true);
   const [enable, setEnable] = useState<boolean>(false)
   const [current, setCurrent] = useState<number>(0)
-  const [result, setResult] = useState<boolean>(false);
+  const [enableResult, setEnableResult] = useState<boolean>(false);
   const [points, setPoints] = useState<Points>({correct: 0, incorrect: 0});
+  const [enableQuestion, setEnableQuestion] = useState<boolean>(true);
   
   const handleClick = (event: React.SyntheticEvent<HTMLDivElement>, index: number) => {
     if (!isInteractable) return;
     let status = index === questions[current].correct;
 
     if(status){
-      
+      setPoints({
+        ...points,
+        correct: points.correct + 1
+      });
+    } else if (!status) {
+      setPoints({
+        ...points,
+        incorrect: points.incorrect + 1
+      });
     }
+    
     setSelectedAnswerIndex({ index: index, status: status });
     setIsInteractable(false);
     setEnable(true);
+    setEnableResult(false);
   };
 
   const handleNext = () => {
-    if(current < questions.length){
+    if(current + 1 < questions.length){
       setEnable(false);
       setCurrent(current + 1);
       setIsInteractable(true);
       setSelectedAnswerIndex({index: 0, status: 0})
     } else {
-      setResult(true);
+      setEnableResult(true);
+      setEnableQuestion(false);
     }
   }
 
   return (
     <div className="container mx-auto w-screen min-h-screen flex flex-col items-center justify-center">
       <Question 
+        enableQuestion={enableQuestion}
         label={questions[current].question} 
         assistant={questions[current].assistant}
         numberOfQuestions={questions.length} 
@@ -63,7 +76,7 @@ const Page = () => {
         ))}
       </Question>
       <Result 
-        enable={enable}
+        enable={enableResult}
         correct={points.correct}
         incorrect={points.incorrect}
       />
