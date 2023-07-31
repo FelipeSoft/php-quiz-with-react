@@ -9,19 +9,35 @@ import { useState, useEffect } from "react";
 const Page = () => {
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<AnswerType>({ index: 0, status: 0 });
   const [isInteractable, setIsInteractable] = useState<boolean>(true);
+  const [enable, setEnable] = useState<boolean>(false)
+
+  let current = 0;
 
   const handleClick = (event: React.SyntheticEvent<HTMLDivElement>, index: number) => {
     if (!isInteractable) return;
-    let status = index === questions[0].correct;
+    let status = index === questions[current].correct;
 
     setSelectedAnswerIndex({ index: index, status: status });
     setIsInteractable(false);
+    setEnable(true);
   };
+
+  const handleNext = () => {
+    setEnable(false);
+    current++;
+    console.log(questions[current]);
+  }
 
   return (
     <div className="container mx-auto w-screen min-h-screen flex flex-col items-center justify-center">
-      <Question label={questions[0].question} numberOfQuestions={questions.length} currentQuestion={1}>
-        {questions[0].answers.map((element, index) => (
+      <Question 
+        label={questions[current].question} 
+        numberOfQuestions={questions.length} 
+        currentQuestion={current + 1}
+        enable={enable}
+        onClick={handleNext}
+        >
+        {questions[current].answers.map((element, index) => (
           <Answer
             key={index}
             border={`border-blue-950`}
