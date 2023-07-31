@@ -8,15 +8,21 @@ import { useState } from "react";
 
 const Page = () => {
     const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<AnswerType>({index: 0, status: 0});
+    const [isInteractable, setIsInteractable] = useState<boolean>(true);
 
-    const handleClick = (index: number) => {
+    const handleClick = (event: React.SyntheticEvent<HTMLDivElement>, index: number) => {
+        if (!isInteractable) return;
+
+        setSelectedAnswerIndex({index: index, status: 0});
+
         if(index === questions[0].correct){
             setSelectedAnswerIndex({index: index, status: true});
         } else {
             setSelectedAnswerIndex({index: index, status: false});
         }
-    };
-    
+
+        setIsInteractable(false);
+    }
 
     return (
         <div className="container mx-auto w-screen min-h-screen flex flex-col items-center justify-center">
@@ -25,7 +31,7 @@ const Page = () => {
                     <Answer
                         validator={selectedAnswerIndex.status}
                         selected={selectedAnswerIndex.index === index}
-                        onClick={() => handleClick(index)} 
+                        onClick={(event) => handleClick(event, index)} 
                         label={element}
                     />
                 )}
