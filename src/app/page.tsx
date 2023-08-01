@@ -7,7 +7,8 @@ import { AnswerType } from "@/app/types/AnswerType";
 import { useState } from "react";
 import { Result } from "@/app/components/Result";
 import { Points } from "@/app/types/Points";
- 
+import { ProgressBar } from "@/app/components/ProgressBar";
+
 const Page = () => {
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<AnswerType>({ index: null, status: 0 });
   const [isInteractable, setIsInteractable] = useState<boolean>(true);
@@ -17,7 +18,10 @@ const Page = () => {
   const [points, setPoints] = useState<Points>({correct: 0, incorrect: 0});
   const [enableQuestion, setEnableQuestion] = useState<boolean>(true);
   const [showCorrect, setShowCorrect] = useState<number | null>(null);
-  
+  const [progress, setProgress] = useState<number>(10);
+  const [progressPoints, setProgressPoints] = useState<number>(2);
+  const [enableProgress, setEnableProgress] = useState<boolean>(true);
+
   const handleClick = (index: number) => {
     if (!isInteractable) return;
     let status = index === questions[current].correct;
@@ -49,41 +53,48 @@ const Page = () => {
       setIsInteractable(true);
       setShowCorrect(null)
       setSelectedAnswerIndex({ index: null, status: 0 });
+
+      setProgressPoints(progressPoints + 1);
+      setProgress(( progressPoints / questions.length ) * 100);
     } else {
       setEnableResult(true);
       setEnableQuestion(false);
+      setEnableProgress(false);
     }
   }
 
   return (
-    <div className="container mx-auto max-w-lg min-h-screen flex flex-col items-center justify-center p-4">
-      <Question   
-        enableQuestion={enableQuestion}
-        label={questions[current].question} 
-        image={questions[current].assistant}
-        numberOfQuestions={questions.length} 
-        currentQuestion={current + 1}
-        enable={enable}
-        onClick={handleNext}
-        >
-        {questions[current].answers.map((element, index) => (
-          <Answer
-            standard={!(selectedAnswerIndex.index === index) && !(showCorrect === index)}
-            isCorrect={showCorrect === index}
-            key={index}
-            validator={selectedAnswerIndex.status}
-            selected={selectedAnswerIndex.index === index}
-            onClick={() => handleClick(index)}
-            label={element}
-            className={!isInteractable ? "disable-hover" : ""}
-          />
-        ))}
-      </Question>
-      <Result 
-        enable={enableResult}
-        correct={points.correct}
-        incorrect={points.incorrect}
-      />
+    <div className="relative container mx-auto max-w-lg min-h-screen flex flex-col items-center justify-center p-4">
+      <ProgressBar width={progress} enable={enableProgress}/>
+      <div className="relative w-full h-full flex flex-col justify-center items-center">
+        <Question   
+          enableQuestion={enableQuestion}
+          label={questions[current].question} 
+          image={questions[current].assistant}
+          numberOfQuestions={questions.length} 
+          currentQuestion={current + 1}
+          enable={enable}
+          onClick={handleNext}
+          >
+          {questions[current].answers.map((element, index) => (
+            <Answer
+              standard={!(selectedAnswerIndex.index === index) && !(showCorrect === index)}
+              isCorrect={showCorrect === index}
+              key={index}
+              validator={selectedAnswerIndex.status}
+              selected={selectedAnswerIndex.index === index}
+              onClick={() => handleClick(index)}
+              label={element}
+              className={!isInteractable ? "disable-hover" : ""}
+            />
+          ))}
+        </Question>
+        <Result 
+          enable={enableResult}
+          correct={points.correct}
+          incorrect={points.incorrect}
+        />
+      </div>
     </div>
   );
 };
