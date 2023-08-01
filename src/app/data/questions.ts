@@ -4,13 +4,13 @@ export const questions: Question[] = [
     {
         id: 1, 
         question: "Como as variáveis são declaradas no PHP?", 
-        answers: ["variavel = 0", "_variavel = 0", "$variavel = 0", "$_variavel = 0"],
+        answers: ["int variavel = 0", "let variavel: number = 0", "$variavel = 0", "$_variavel = 0"],
         correct: 2
     },
     {
         id: 2, 
         question: "Qual a forma correta de declarar funções anônimas no PHP?", 
-        answers: ["fn() { código }", "function() { código }", "f() { código }", "def { código }"],
+        answers: ["fn()", "function()", "f()", "def:"],
         correct: 1
     },
     {
