@@ -7,17 +7,18 @@ import { AnswerType } from "@/app/types/AnswerType";
 import { useState } from "react";
 import { Result } from "@/app/components/Result";
 import { Points } from "@/app/types/Points";
-
+ 
 const Page = () => {
-  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<AnswerType>({ index: 0, status: 0 });
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<AnswerType>({ index: null, status: 0 });
   const [isInteractable, setIsInteractable] = useState<boolean>(true);
   const [enable, setEnable] = useState<boolean>(false)
   const [current, setCurrent] = useState<number>(0)
   const [enableResult, setEnableResult] = useState<boolean>(false);
   const [points, setPoints] = useState<Points>({correct: 0, incorrect: 0});
   const [enableQuestion, setEnableQuestion] = useState<boolean>(true);
+  const [showCorrect, setShowCorrect] = useState<number | null>(null);
   
-  const handleClick = (event: React.SyntheticEvent<HTMLDivElement>, index: number) => {
+  const handleClick = (index: number) => {
     if (!isInteractable) return;
     let status = index === questions[current].correct;
 
@@ -26,14 +27,16 @@ const Page = () => {
         ...points,
         correct: points.correct + 1
       });
+      setSelectedAnswerIndex({index: index, status: status})
     } else if (!status) {
       setPoints({
         ...points,
         incorrect: points.incorrect + 1
       });
+      setShowCorrect(questions[current].correct)
+      setSelectedAnswerIndex({ index: index, status: 0 })
     }
     
-    setSelectedAnswerIndex({ index: index, status: status });
     setIsInteractable(false);
     setEnable(true);
     setEnableResult(false);
@@ -44,7 +47,8 @@ const Page = () => {
       setEnable(false);
       setCurrent(current + 1);
       setIsInteractable(true);
-      setSelectedAnswerIndex({index: 0, status: 0})
+      setShowCorrect(null)
+      setSelectedAnswerIndex({ index: null, status: 0 });
     } else {
       setEnableResult(true);
       setEnableQuestion(false);
@@ -56,7 +60,7 @@ const Page = () => {
       <Question 
         enableQuestion={enableQuestion}
         label={questions[current].question} 
-        assistant={questions[current].assistant}
+        image={questions[current].assistant}
         numberOfQuestions={questions.length} 
         currentQuestion={current + 1}
         enable={enable}
@@ -64,14 +68,13 @@ const Page = () => {
         >
         {questions[current].answers.map((element, index) => (
           <Answer
+            isCorrect={showCorrect === index}
             key={index}
-            border={`border-blue-950`}
             validator={selectedAnswerIndex.status}
             selected={selectedAnswerIndex.index === index}
-            onClick={(event) => handleClick(event, index)}
+            onClick={() => handleClick(index)}
             label={element}
             className={!isInteractable ? "disable-hover" : ""}
-            isFirst={index === 0}
           />
         ))}
       </Question>

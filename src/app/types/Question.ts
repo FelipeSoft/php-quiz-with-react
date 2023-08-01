@@ -5,5 +5,5 @@ export type Question = {
     question: string;
     answers: Array<string>;
     correct: number;
-    assistant?: React.ReactNode;
+    assistant?: string;
 }

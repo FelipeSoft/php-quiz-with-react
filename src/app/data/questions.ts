@@ -1,5 +1,4 @@
 import { Question } from "@/app/types/Question";
-import { Assistant } from "@/app/components/Assistant";
 
 export const questions: Question[] = [
     {
@@ -29,7 +28,7 @@ export const questions: Question[] = [
     {
         id: 4, 
         question: "Analise o código abaixo e assinale a alternativa que responde ao resultado correto:", 
-        assistant: <Assistant />,
+        assistant: "code1.png",
         answers: 
             [
                 "Sequência: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10.", 
@@ -53,47 +52,62 @@ export const questions: Question[] = [
     },
     {
         id: 6, 
-        question: "Diferencie as estruturas de repetições while e do-while:", 
+        question: "A linguagem de programação PHP é altamente requisitada em aplicações de grande desempenho, e por ser uma linguagem interpretada, possui um processamento rápido e intensivo comparado a outras linguagens.", 
         answers: 
             [
-
+                "Verdadeiro",
+                "Falso"
             ],
-        correct: 0
+        correct: 1
     },
     {
         id: 7, 
-        question: "Diferencie as estruturas de repetições while e do-while:", 
+        question: "O que é escopo?", 
         answers: 
-            [
-
-            ],
-        correct: 0
+        [
+            "Restrição e manuntenção de variáveis, funções e classes dentro de um único trecho de código",
+            "Restrição e manuntenção de variáveis, funções e classes dentro de diferentes partes de um código",
+            "Visibilidade e disponibilidade de variáveis, funções e classes dentro de diferentes partes de um código",
+            "Visibilidade e disponibilidade de variáveis, funções e classes de um único trecho de código",
+        ],
+        correct: 2
     },
     {
         id: 8, 
-        question: "Diferencie as estruturas de repetições while e do-while:", 
+        question: "O que é uma variável superglobal?", 
+        assistant: "code2.png",
         answers: 
             [
-
+                "Acesso disponível em um escopo restrito",
+                "Acesso disponível em um escopo livre",
+                "Acesso disponível em todos os escopos",
+                "Nenhum acesso de escopos"
             ],
-        correct: 0
+        correct: 2
     },
     {
         id: 9, 
-        question: "Diferencie as estruturas de repetições while e do-while:", 
+        question: "Indique a alternativa que não corresponde a uma variável superglobal: ", 
         answers: 
             [
-
+                "$_GET",
+                "$_SESSION",
+                "$_LIB",
+                "$_ENV"
             ],
-        correct: 0
+        correct: 2
     },
     {
         id: 10, 
-        question: "Diferencie as estruturas de repetições while e do-while:", 
+        question: "Qual o resultado no código a seguir: ", 
+        assistant: "code3.png",
         answers: 
             [
- 
+                "Looping infinito da palavra Running",
+                "RunningRunningRunning15",
+                "Looping infinito do número 61015",
+                "RunningRunning15"
             ],
-        correct: 0
+        correct: 3
     },
 ];
