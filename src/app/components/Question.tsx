@@ -13,7 +13,7 @@ type Props = {
 
 export const Question = ({ onClick, enable, enableQuestion, children, label, numberOfQuestions, currentQuestion, image }: Props) => {
     return (
-        <div className={`max-h-full max-w-lg ${enableQuestion && "block"} ${!enableQuestion && "hidden"}`}>
+        <div className={`max-h-full w-full ${enableQuestion && "block"} ${!enableQuestion && "hidden"}`}>
             <p className="text-gray-500 text-xs">{currentQuestion} / {numberOfQuestions}</p>
             <h1 className="text-white mb-4 text-sm">{ label }</h1>
             <div className="w-full h-auto">

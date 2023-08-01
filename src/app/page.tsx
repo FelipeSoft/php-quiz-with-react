@@ -56,8 +56,8 @@ const Page = () => {
   }
 
   return (
-    <div className="container mx-auto w-screen min-h-screen flex flex-col items-center justify-center">
-      <Question 
+    <div className="container mx-auto max-w-lg min-h-screen flex flex-col items-center justify-center p-4">
+      <Question   
         enableQuestion={enableQuestion}
         label={questions[current].question} 
         image={questions[current].assistant}
@@ -68,6 +68,7 @@ const Page = () => {
         >
         {questions[current].answers.map((element, index) => (
           <Answer
+            standard={!(selectedAnswerIndex.index === index) && !(showCorrect === index)}
             isCorrect={showCorrect === index}
             key={index}
             validator={selectedAnswerIndex.status}
