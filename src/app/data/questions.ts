@@ -108,6 +108,6 @@ export const questions: Question[] = [
                 "Looping infinito do número 61015",
                 "RunningRunning15"
             ],
-        correct: 3
+        correct: 1
     },
 ];
