@@ -10,6 +10,8 @@ import { Points } from "@/app/types/Points";
 import { ProgressBar } from "@/app/components/ProgressBar";
 
 const Page = () => {
+  let random = Math.floor(Math.random() * (questions.length - 1));
+
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<AnswerType>({ index: -1, status: 0 });
   const [isInteractable, setIsInteractable] = useState<boolean>(true);
   const [enable, setEnable] = useState({ enableButtonNext: false, enableButtonConfirm: false })
@@ -22,7 +24,7 @@ const Page = () => {
   const [progressPoints, setProgressPoints] = useState<number>(2);
   const [enableProgress, setEnableProgress] = useState<boolean>(true);
   const [selected, setSelected] = useState(-1);
-
+  
   const handleSelect = (index: number) => {
     if(!isInteractable) return;
     setSelected(index);
