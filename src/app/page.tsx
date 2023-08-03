@@ -49,8 +49,6 @@ const Page = () => {
       setSelectedAnswerIndex({ ...selectedAnswerIndex, status: false })
     }
     
-    alert(`Selecionada: ${selected}, Confirmada: ${selectedAnswerIndex.index}, Correta? ${selectedAnswerIndex.index === questions[current].correct ? "Sim" : "Não"}`)
-
     setSelected(-1);
     setIsInteractable(false);
     setEnable({...enable, enableButtonNext: true});
