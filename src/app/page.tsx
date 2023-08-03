@@ -49,7 +49,7 @@ const Page = () => {
       setSelectedAnswerIndex({ ...selectedAnswerIndex, status: false })
     }
     
-    alert(`Selecionada: ${selected}, Confirmada: ${selectedAnswerIndex.index}, Correta? ${selectedAnswerIndex.status === false ? "Sim" : "Não"}`)
+    alert(`Selecionada: ${selected}, Confirmada: ${selectedAnswerIndex.index}, Correta? ${selectedAnswerIndex.index === questions[current].correct ? "Sim" : "Não"}`)
 
     setSelected(-1);
     setIsInteractable(false);
@@ -97,7 +97,7 @@ const Page = () => {
               isCorrect={showCorrect === index}
               key={index}
               confirmed={selectedAnswerIndex.index === index}
-              validator={selectedAnswerIndex.status}
+              validator={selectedAnswerIndex.index === questions[current].correct}
               onClick={() => handleSelect(index)}
               label={element}
               className={!isInteractable ? "disable-hover" : ""}
