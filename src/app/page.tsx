@@ -10,8 +10,6 @@ import { Points } from "@/app/types/Points";
 import { ProgressBar } from "@/app/components/ProgressBar";
 
 const Page = () => {
-  let random = Math.floor(Math.random() * (questions.length - 1));
-
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<AnswerType>({ index: -1, status: 0 });
   const [isInteractable, setIsInteractable] = useState<boolean>(true);
   const [enable, setEnable] = useState({ enableButtonNext: false, enableButtonConfirm: false })
@@ -24,7 +22,7 @@ const Page = () => {
   const [progressPoints, setProgressPoints] = useState<number>(2);
   const [enableProgress, setEnableProgress] = useState<boolean>(true);
   const [selected, setSelected] = useState(-1);
-  
+
   const handleSelect = (index: number) => {
     if(!isInteractable) return;
     setSelected(index);
@@ -33,34 +31,38 @@ const Page = () => {
   }
 
   const handleConfirm = (index: number) => {
+    setIsInteractable(false);
+
     if (!isInteractable && index === null) return;
     let status = index === questions[current].correct;
 
     if(status){
-      setPoints({
-        ...points,
-        correct: points.correct + 1
-      });
       setSelectedAnswerIndex({...selectedAnswerIndex, status: true });
+      setIsInteractable(false);
     } else if (!status) {
-      setPoints({
-        ...points,
-        incorrect: points.incorrect + 1
-      });
       setShowCorrect(questions[current].correct)
       setSelectedAnswerIndex({ ...selectedAnswerIndex, status: false })
     }
     
     setSelected(-1);
-    setIsInteractable(false);
     setEnable({...enable, enableButtonNext: true});
     setEnableResult(false);
   }
 
   const handleNext = () => {
-    if(current + 1 < questions.length){
+    if(current < questions.length){
+      if(selectedAnswerIndex.index === questions[current].correct){
+        setPoints({
+          ...points,
+          correct: points.correct + 1
+        })
+      } else {
+        setPoints({
+          ...points,
+          incorrect: points.incorrect + 1
+        })
+      }
       setEnable({enableButtonConfirm: false, enableButtonNext: false});
-      setCurrent(current + 1);
       setIsInteractable(true);
       setShowCorrect(null);
       setSelectedAnswerIndex({ index: -1, status: 0 }); 
@@ -68,12 +70,13 @@ const Page = () => {
 
       setProgressPoints(progressPoints + 1);
       setProgress(( progressPoints / questions.length ) * 100);
+      setCurrent(current + 1);
     } else {
       setEnableResult(true);
       setEnableQuestion(false);
       setEnableProgress(false);
-    }
-   
+      setIsInteractable(false);
+    } 
   }
 
   return (
@@ -109,6 +112,7 @@ const Page = () => {
           enable={enableResult}
           correct={points.correct}
           incorrect={points.incorrect}
+          total={points.correct + points.incorrect}
         />
       </div>
     </div>
