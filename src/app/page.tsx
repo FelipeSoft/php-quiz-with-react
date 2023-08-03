@@ -39,16 +39,18 @@ const Page = () => {
         ...points,
         correct: points.correct + 1
       });
-      setSelectedAnswerIndex({...selectedAnswerIndex, status: status});
+      setSelectedAnswerIndex({...selectedAnswerIndex, status: true });
     } else if (!status) {
       setPoints({
         ...points,
         incorrect: points.incorrect + 1
       });
       setShowCorrect(questions[current].correct)
-      setSelectedAnswerIndex({ ...selectedAnswerIndex, status: status })
+      setSelectedAnswerIndex({ ...selectedAnswerIndex, status: false })
     }
     
+    alert(`Selecionada: ${selected}, Confirmada: ${selectedAnswerIndex.index}, Correta? ${selectedAnswerIndex.status === false ? "Sim" : "Não"}`)
+
     setSelected(-1);
     setIsInteractable(false);
     setEnable({...enable, enableButtonNext: true});
