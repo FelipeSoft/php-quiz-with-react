@@ -10,9 +10,9 @@ import { Points } from "@/app/types/Points";
 import { ProgressBar } from "@/app/components/ProgressBar";
 
 const Page = () => {
-  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<AnswerType>({ index: null, status: 0 });
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<AnswerType>({ index: -1, status: 0 });
   const [isInteractable, setIsInteractable] = useState<boolean>(true);
-  const [enable, setEnable] = useState<boolean>(false)
+  const [enable, setEnable] = useState({ enableButtonNext: false, enableButtonConfirm: false })
   const [current, setCurrent] = useState<number>(0)
   const [enableResult, setEnableResult] = useState<boolean>(false);
   const [points, setPoints] = useState<Points>({correct: 0, incorrect: 0});
@@ -21,9 +21,17 @@ const Page = () => {
   const [progress, setProgress] = useState<number>(10);
   const [progressPoints, setProgressPoints] = useState<number>(2);
   const [enableProgress, setEnableProgress] = useState<boolean>(true);
+  const [selected, setSelected] = useState(-1);
 
-  const handleClick = (index: number) => {
-    if (!isInteractable) return;
+  const handleSelect = (index: number) => {
+    if(!isInteractable) return;
+    setSelected(index);
+    setSelectedAnswerIndex({...selectedAnswerIndex, index: index})
+    setEnable({...enable, enableButtonConfirm: true})
+  }
+
+  const handleConfirm = (index: number) => {
+    if (!isInteractable && index === null) return;
     let status = index === questions[current].correct;
 
     if(status){
@@ -31,28 +39,30 @@ const Page = () => {
         ...points,
         correct: points.correct + 1
       });
-      setSelectedAnswerIndex({index: index, status: status})
+      setSelectedAnswerIndex({...selectedAnswerIndex, status: status});
     } else if (!status) {
       setPoints({
         ...points,
         incorrect: points.incorrect + 1
       });
       setShowCorrect(questions[current].correct)
-      setSelectedAnswerIndex({ index: index, status: 0 })
+      setSelectedAnswerIndex({ ...selectedAnswerIndex, status: status })
     }
     
+    setSelected(-1);
     setIsInteractable(false);
-    setEnable(true);
+    setEnable({...enable, enableButtonNext: true});
     setEnableResult(false);
-  };
+  }
 
   const handleNext = () => {
     if(current + 1 < questions.length){
-      setEnable(false);
+      setEnable({enableButtonConfirm: false, enableButtonNext: false});
       setCurrent(current + 1);
       setIsInteractable(true);
-      setShowCorrect(null)
-      setSelectedAnswerIndex({ index: null, status: 0 });
+      setShowCorrect(null);
+      setSelectedAnswerIndex({ index: -1, status: 0 }); 
+      setSelected(-1);
 
       setProgressPoints(progressPoints + 1);
       setProgress(( progressPoints / questions.length ) * 100);
@@ -61,6 +71,7 @@ const Page = () => {
       setEnableQuestion(false);
       setEnableProgress(false);
     }
+   
   }
 
   return (
@@ -73,19 +84,22 @@ const Page = () => {
           image={questions[current].assistant}
           numberOfQuestions={questions.length} 
           currentQuestion={current + 1}
-          enable={enable}
-          onClick={handleNext}
+          enableButtonConfirm={enable.enableButtonConfirm}
+          enableButtonNext={enable.enableButtonNext}
+          onClick1={()=>handleConfirm(selectedAnswerIndex.index)}
+          onClick2={handleNext}
           >
           {questions[current].answers.map((element, index) => (
             <Answer
               standard={!(selectedAnswerIndex.index === index) && !(showCorrect === index)}
               isCorrect={showCorrect === index}
               key={index}
+              confirmed={selectedAnswerIndex.index === index}
               validator={selectedAnswerIndex.status}
-              selected={selectedAnswerIndex.index === index}
-              onClick={() => handleClick(index)}
+              onClick={() => handleSelect(index)}
               label={element}
               className={!isInteractable ? "disable-hover" : ""}
+              isSelected={selected === index}
             />
           ))}
         </Question>

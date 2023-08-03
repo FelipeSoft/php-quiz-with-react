@@ -1,17 +1,20 @@
 import React from "react";
+import { Button } from "./Button";
 
 type Props = {
     children: React.ReactNode;
     label: string;
     numberOfQuestions: number;
     currentQuestion: number;
-    enable: boolean;
+    enableButtonConfirm: boolean; 
+    enableButtonNext: boolean;
     enableQuestion: boolean;
     image?: string;
-    onClick: () => void
+    onClick1: () => void;
+    onClick2: () => void;
 }
 
-export const Question = ({ onClick, enable, enableQuestion, children, label, numberOfQuestions, currentQuestion, image }: Props) => {
+export const Question = ({ onClick1, onClick2, enableButtonConfirm, enableButtonNext, enableQuestion, children, label, numberOfQuestions, currentQuestion, image }: Props) => {
     return (
         <div className={`h-full w-full ${enableQuestion && "block"} ${!enableQuestion && "hidden"} mt-20`}>
             <p className="text-gray-500 text-xs">{currentQuestion} / {numberOfQuestions}</p>
@@ -22,9 +25,10 @@ export const Question = ({ onClick, enable, enableQuestion, children, label, num
             <div className="flex flex-col">
                 { children }
             </div>
-            <button 
-                className={`w-full h-max px-4 py-2 bg-blue-800 rounded-md text-white text-xs ${enable && "block pointer-events-auto"} ${!enable && "opacity-0 pointer-events-none"}`} 
-                onClick={onClick}>Next</button>
+            <div className="flex items-center w-full gap-4">
+                <Button onClick={onClick1} enable={enableButtonConfirm} label={"Confirm"} backgroundColor={"bg-blue-600"}/>
+                <Button onClick={onClick2} enable={enableButtonNext} label={"Next"} backgroundColor={"bg-blue-800"}/>
+            </div>
         </div>
     );
 }

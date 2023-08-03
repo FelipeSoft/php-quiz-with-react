@@ -1,4 +1,4 @@
 export type AnswerType = {
-    index: number | null;
+    index: number;
     status: boolean | 0;
 }
