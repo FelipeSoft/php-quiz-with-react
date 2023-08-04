@@ -19,11 +19,12 @@ export const Answer = ({ className, label, onClick, validator = 0, isCorrect, st
             ${confirmed && "pointer-events-none"} 
             ${isCorrect && "pointer-events-none"} flex items-center justify-start mb-4 px-4 py-2 hover:bg-slate-800  
             
-            ${isSelected && "border-white bg-white text-black font-bold"}
+            ${isSelected && !confirmed && "border-white bg-white text-black font-bold"}
             ${standard && "bg-slate-900"}
-            ${confirmed && validator && "bg-green-800 border-green-800"}
+            ${isSelected && confirmed && !validator && "bg-red-800 border-red-800 text-white"}
+            ${isSelected && confirmed && validator && "bg-green-800 border-green-800 text-white"}
             ${!isSelected && confirmed && !validator && "bg-red-800 border-red-800"}
-            ${isCorrect && !isSelected && "bg-green-800 border-green-800"}
+            ${isCorrect && isSelected && "bg-green-800 border-green-800"}
             `}>
         {label}
         </div>

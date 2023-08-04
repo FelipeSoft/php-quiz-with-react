@@ -18,6 +18,7 @@ const Page = () => {
   const [showCorrect, setShowCorrect] = useState<number | null>(null);
   const [progressPoints, setProgressPoints] = useState(1);
   const [selected, setSelected] = useState(-1);
+  const [confirmed, setConfirmed] = useState(false);
 
   const handleSelect = (index: number) => {
     if (!isInteractable) return;
@@ -41,6 +42,7 @@ const Page = () => {
     setIsInteractable(false);
     setEnable({ enableButtonNext: true, enableButtonConfirm: false });
     setEnableResult(false);
+    setConfirmed(true);
   };
 
   const handleNext = () => {
@@ -55,6 +57,7 @@ const Page = () => {
       setEnableResult(true);
       setIsInteractable(false);
     }
+    setConfirmed(false);
   };
 
   const progress = (progressPoints / questions.length) * 100;
@@ -81,7 +84,7 @@ const Page = () => {
                 key={index}
                 standard={!(selectedAnswerIndex.index === index) && !(showCorrect === index)}
                 isCorrect={showCorrect === index}
-                confirmed={selectedAnswerIndex.index === index}
+                confirmed={confirmed}
                 validator={selectedAnswerIndex.index === questions[current].correct}
                 onClick={() => handleSelect(index)}
                 label={element}
