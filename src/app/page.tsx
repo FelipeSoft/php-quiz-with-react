@@ -31,6 +31,8 @@ const Page = () => {
   }
 
   const handleConfirm = (index: number) => {
+    setIsInteractable(false);
+
     if (!isInteractable && index === null) return;
     let status = index === questions[current].correct;
 
@@ -39,25 +41,34 @@ const Page = () => {
         ...points,
         correct: points.correct + 1
       });
-      setSelectedAnswerIndex({index: index, status: status});
+      setSelectedAnswerIndex({...selectedAnswerIndex, status: true });
     } else if (!status) {
-      setPoints({
-        ...points,
-        incorrect: points.incorrect + 1
-      });
       setShowCorrect(questions[current].correct)
       setSelectedAnswerIndex({ index: index, status: 0 })
     }
     
+    alert(`Selecionada: ${selected}, Confirmada: ${selectedAnswerIndex.index}, Correta? ${selectedAnswerIndex.status === false ? "Sim" : "Não"}`)
+
+    setSelected(-1);
     setIsInteractable(false);
     setEnable({...enable, enableButtonNext: true});
     setEnableResult(false);
   }
 
   const handleNext = () => {
-    if(current + 1 < questions.length){
+    if(current < questions.length){
+      if(selectedAnswerIndex.index === questions[current].correct){
+        setPoints({
+          ...points,
+          correct: points.correct + 1
+        })
+      } else {
+        setPoints({
+          ...points,
+          incorrect: points.incorrect + 1
+        })
+      }
       setEnable({enableButtonConfirm: false, enableButtonNext: false});
-      setCurrent(current + 1);
       setIsInteractable(true);
       setShowCorrect(null);
       setSelectedAnswerIndex({ index: -1, status: 0 }); 
@@ -65,12 +76,13 @@ const Page = () => {
 
       setProgressPoints(progressPoints + 1);
       setProgress(( progressPoints / questions.length ) * 100);
+      setCurrent(current + 1);
     } else {
       setEnableResult(true);
       setEnableQuestion(false);
       setEnableProgress(false);
-    }
-   
+      setIsInteractable(false);
+    } 
   }
 
   return (
@@ -94,7 +106,7 @@ const Page = () => {
               isCorrect={showCorrect === index}
               key={index}
               confirmed={selectedAnswerIndex.index === index}
-              validator={selectedAnswerIndex.status}
+              validator={selectedAnswerIndex.index === questions[current].correct}
               onClick={() => handleSelect(index)}
               label={element}
               className={!isInteractable ? "disable-hover" : ""}
@@ -106,6 +118,7 @@ const Page = () => {
           enable={enableResult}
           correct={points.correct}
           incorrect={points.incorrect}
+          total={points.correct + points.incorrect}
         />
       </div>
     </div>
