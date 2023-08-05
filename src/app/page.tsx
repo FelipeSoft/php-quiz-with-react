@@ -28,21 +28,19 @@ const Page = () => {
   };
 
   const handleConfirm = () => {
-    setIsInteractable(false);
     const status = selectedAnswerIndex.index === questions[current].correct ? 1 : 0;
-
-    if (status) {
-      setPoints((prevPoints) => ({ ...prevPoints, correct: prevPoints.correct + 1 }));
-    } else {
-      setPoints((prevPoints) => ({ ...prevPoints, incorrect: prevPoints.incorrect + 1 }));
-      setShowCorrect(questions[current].correct);
-    }
-
-    setSelectedAnswerIndex({ index: selected, status: status });
     setIsInteractable(false);
     setEnable({ enableButtonNext: true, enableButtonConfirm: false });
+    setSelectedAnswerIndex({ index: selected, status: status });
     setEnableResult(false);
     setConfirmed(true);
+
+    if (status) {
+      setPoints({ ...points, correct: points.correct + 1 });
+    } else {
+      setPoints({ ...points, incorrect: points.incorrect + 1 });
+      setShowCorrect(questions[current].correct);
+    }
   };
 
   const handleNext = () => {
@@ -50,8 +48,8 @@ const Page = () => {
     setIsInteractable(true);
     setShowCorrect(null);
     setSelectedAnswerIndex({ index: -1, status: 0 });
-    setProgressPoints((prevPoints) => prevPoints + 1);
-    setCurrent((prevCurrent) => prevCurrent + 1);
+    setProgressPoints(progressPoints + 1);
+    setCurrent(current + 1);
 
     if (current >= questions.length - 1) {
       setEnableResult(true);
@@ -59,6 +57,15 @@ const Page = () => {
     }
     setConfirmed(false);
   };
+
+  const handleReset = () => {
+    setEnableResult(false);
+    setCurrent(0);
+    setEnable({ enableButtonConfirm: false, enableButtonNext: false })
+    setProgressPoints(1);
+    setSelectedAnswerIndex({ index: -1, status: 0 });
+    setIsInteractable(true);
+  }
 
   const progress = (progressPoints / questions.length) * 100;
   const enableProgress = current < questions.length;
@@ -96,9 +103,10 @@ const Page = () => {
         )}
         {enableResult && (
           <Result
+            onClick={handleReset}
             correct={points.correct}
             incorrect={points.incorrect}
-            total={points.correct + points.incorrect}
+            total={questions.length}
             enable={enableResult}
           />
         )}

@@ -25,9 +25,9 @@ export const Question = ({ onClick1, onClick2, enableButtonConfirm, enableButton
             <div className="flex flex-col">
                 { children }
             </div>
-            <div className="flex items-center w-full gap-4">
-                <Button onClick={onClick1} enable={enableButtonConfirm} label={"Confirmar"} backgroundColor={"bg-blue-600"}/>
-                <Button onClick={onClick2} enable={enableButtonNext} label={"Próxima"} backgroundColor={"bg-blue-800"}/>
+            <div className={`flex items-center justify-between w-full gap-4`}>
+                <div><Button onClick={onClick1} enable={enableButtonConfirm} label={"Confirmar"} backgroundColor={"bg-blue-600"}/></div>
+                <div><Button onClick={onClick2} enable={enableButtonNext} label={"Próxima"} backgroundColor={"bg-blue-800"}/></div>
             </div>
         </div>
     );
